@@ -9,13 +9,28 @@ const CartPage: React.FC = () => {
   const { cart, removeFromCart, clearCart, addToCart } = useCart();
   const [isOrderPlaced, setIsOrderPlaced] = useState(false);
   const [lastOrder, setLastOrder] = useState<{ items: CartItem[], total: number, date: string } | null>(null);
-  const [orderHistory, setOrderHistory] = useState<{ items: CartItem[], total: number, date: string }[]>(() => {
+  const [orderHistory, setOrderHistory] = useState<{ items: CartItem[], total: number, date: string, id?: string }[]>(() => {
     const saved = localStorage.getItem('hemzal_order_history');
-    return saved ? JSON.parse(saved) : [];
+    if (!saved) return [];
+    try {
+      const parsed = JSON.parse(saved);
+      // Migrate old data if necessary
+      return parsed.map((order: any) => ({
+        ...order,
+        items: order.items.map((item: any) => ({
+          ...item,
+          chicken: item.chicken || item.beverage // Fallback for old data
+        }))
+      }));
+    } catch (e) {
+      console.error('Failed to parse order history:', e);
+      return [];
+    }
   });
   const [email, setEmail] = useState('');
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [emailStatus, setEmailStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
   // Save history to localStorage
   React.useEffect(() => {
@@ -24,19 +39,22 @@ const CartPage: React.FC = () => {
 
   const subtotal = cart.reduce(
     (total, item) => {
-      const priceValue = item.beverage.price ? parseFloat(item.beverage.price.replace('$', '')) : 0;
+      const priceValue = item.chicken?.price ? parseFloat(item.chicken.price.replace('$', '')) : 0;
       return total + priceValue * item.quantity;
     },
     0
   );
 
   const handleCheckout = async () => {
+    setCheckoutError(null);
     if (!email) {
-      alert('Please enter your email address to receive order confirmation.');
+      setCheckoutError('Please enter your email address to receive order confirmation.');
       return;
     }
 
+    const orderId = `HMZ-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
     const orderData = { 
+      id: orderId,
       items: [...cart], 
       total: subtotal,
       date: new Date().toLocaleString()
@@ -82,7 +100,8 @@ const CartPage: React.FC = () => {
 
   const itemVariants = {
     hidden: { opacity: 0, x: -20 },
-    visible: { opacity: 1, x: 0 }
+    visible: { opacity: 1, x: 0 },
+    exit: { opacity: 0, scale: 0.9, transition: { duration: 0.2 } }
   };
 
   if (isOrderPlaced && lastOrder) {
@@ -96,9 +115,10 @@ const CartPage: React.FC = () => {
           <CheckCircle2 className="w-12 h-12 text-green-500" />
         </motion.div>
         
-        <h1 className="text-4xl font-bold text-white mb-4">Order Confirmed!</h1>
+        <h1 className="text-4xl font-bold text-white mb-2">Order Confirmed!</h1>
+        <p className="text-brand-primary font-mono font-bold mb-4 tracking-widest uppercase">#{lastOrder.id}</p>
         <p className="text-brand-light/60 mb-6">
-          Thank you for your purchase. Your refreshing beverages are being prepared and will be with you shortly.
+          Thank you for your purchase. Your crispy chickens are being prepared and will be with you shortly.
         </p>
 
         {emailStatus === 'success' && (
@@ -138,12 +158,12 @@ const CartPage: React.FC = () => {
           
           <div className="space-y-4 mb-8">
             {lastOrder.items.map((item) => (
-              <div key={item.beverage.id} className="flex justify-between items-center">
+              <div key={item.chicken?.id || Math.random()} className="flex justify-between items-center">
                 <div className="flex items-center gap-4">
                   <span className="text-brand-primary font-bold w-6">{item.quantity}x</span>
-                  <span className="text-white">{item.beverage.name}</span>
+                  <span className="text-white">{item.chicken?.name || 'Unknown Item'}</span>
                 </div>
-                <span className="text-brand-light/60">${(parseFloat(item.beverage.price.replace('$', '')) * item.quantity).toFixed(2)}</span>
+                <span className="text-brand-light/60">${(parseFloat((item.chicken?.price || '$0').replace('$', '')) * item.quantity).toFixed(2)}</span>
               </div>
             ))}
           </div>
@@ -164,7 +184,7 @@ const CartPage: React.FC = () => {
             Back to Home
           </button>
           <button
-            onClick={() => window.dispatchEvent(new CustomEvent('changePage', { detail: 'Drinks' }))}
+            onClick={() => window.dispatchEvent(new CustomEvent('changePage', { detail: 'Chickens' }))}
             className="bg-brand-primary text-white font-bold py-4 px-8 rounded-2xl hover:shadow-[0px_0px_20px_rgba(255,69,0,0.4)] transition-all duration-300"
           >
             Order More
@@ -188,7 +208,7 @@ const CartPage: React.FC = () => {
                   <div className="flex flex-wrap gap-2">
                     {order.items.map((item, i) => (
                       <span key={i} className="bg-white/5 border border-white/10 rounded-full px-3 py-1 text-xs text-brand-light/60">
-                        {item.quantity}x {item.beverage.name}
+                        {item.quantity}x {item.chicken?.name || 'Unknown Item'}
                       </span>
                     ))}
                   </div>
@@ -213,14 +233,14 @@ const CartPage: React.FC = () => {
         </motion.div>
         <h2 className="text-3xl font-bold text-white mb-4">Your cart is empty</h2>
         <p className="text-brand-light/60 mb-8 max-w-md">
-          Looks like you haven't added any refreshing beverages to your cart yet.
+          Looks like you haven't added any crispy chickens to your cart yet.
         </p>
         <button
-          onClick={() => window.dispatchEvent(new CustomEvent('changePage', { detail: 'Drinks' }))}
+          onClick={() => window.dispatchEvent(new CustomEvent('changePage', { detail: 'Chickens' }))}
           className="bg-brand-primary text-white font-bold py-4 px-8 rounded-2xl hover:shadow-[0px_0px_20px_rgba(255,69,0,0.4)] transition-all duration-300 flex items-center gap-2"
         >
           <ArrowLeft className="w-5 h-5" />
-          Browse Drinks
+          Browse Chickens
         </button>
       </div>
     );
@@ -248,24 +268,29 @@ const CartPage: React.FC = () => {
             animate="visible"
             className="space-y-4"
           >
-            {cart.map((item) => (
-              <motion.div
-                key={item.beverage.id}
-                variants={itemVariants}
-                className="bg-white/5 border border-white/10 rounded-3xl p-4 sm:p-6 flex items-center gap-4 sm:gap-6 group hover:border-brand-primary/30 transition-colors"
-              >
+            <AnimatePresence mode="popLayout">
+              {cart.map((item) => (
+                <motion.div
+                  key={item.chicken?.id || Math.random()}
+                  layout
+                  variants={itemVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className="bg-white/5 border border-white/10 rounded-3xl p-4 sm:p-6 flex items-center gap-4 sm:gap-6 group hover:border-brand-primary/30 transition-colors"
+                >
                 <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden bg-brand-dark flex-shrink-0">
                   <img
-                    src={item.beverage.imageUrl}
-                    alt={item.beverage.name}
+                    src={item.chicken?.imageUrl}
+                    alt={item.chicken?.name || 'Unknown Item'}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     referrerPolicy="no-referrer"
                   />
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-lg sm:text-xl font-bold text-white truncate">{item.beverage.name}</h3>
-                  <p className="text-brand-primary font-bold">{item.beverage.price}</p>
+                  <h3 className="text-lg sm:text-xl font-bold text-white truncate">{item.chicken?.name || 'Unknown Item'}</h3>
+                  <p className="text-brand-primary font-bold">{item.chicken?.price || '$0'}</p>
                 </div>
 
                 <div className="flex items-center gap-3 sm:gap-4">
@@ -273,9 +298,9 @@ const CartPage: React.FC = () => {
                     <button
                       onClick={() => {
                         if (item.quantity > 1) {
-                          addToCart(item.beverage, -1);
+                          addToCart(item.chicken, -1);
                         } else {
-                          removeFromCart(item.beverage.id);
+                          removeFromCart(item.chicken?.id || 0);
                         }
                       }}
                       className="w-8 h-8 flex items-center justify-center text-white hover:bg-white/10 rounded-lg transition-colors"
@@ -284,7 +309,7 @@ const CartPage: React.FC = () => {
                     </button>
                     <span className="w-8 text-center text-white font-bold">{item.quantity}</span>
                     <button
-                      onClick={() => addToCart(item.beverage, 1)}
+                      onClick={() => addToCart(item.chicken, 1)}
                       className="w-8 h-8 flex items-center justify-center text-white hover:bg-white/10 rounded-lg transition-colors"
                     >
                       <Plus className="w-3 h-3" />
@@ -292,7 +317,7 @@ const CartPage: React.FC = () => {
                   </div>
 
                   <button
-                    onClick={() => removeFromCart(item.beverage.id)}
+                    onClick={() => removeFromCart(item.chicken?.id || 0)}
                     className="p-2 text-brand-light/20 hover:text-brand-secondary transition-colors"
                     aria-label="Remove item"
                   >
@@ -301,8 +326,9 @@ const CartPage: React.FC = () => {
                 </div>
               </motion.div>
             ))}
-          </motion.div>
-        </div>
+          </AnimatePresence>
+        </motion.div>
+      </div>
 
         {/* Order Summary */}
         <div className="w-full md:w-[380px]">
@@ -335,12 +361,20 @@ const CartPage: React.FC = () => {
                   type="email"
                   id="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (checkoutError) setCheckoutError(null);
+                  }}
                   placeholder="your@email.com"
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white placeholder:text-brand-light/20 focus:outline-none focus:border-brand-primary/50 transition-colors"
+                  className={`w-full bg-white/5 border ${checkoutError ? 'border-brand-secondary/50' : 'border-white/10'} rounded-2xl py-4 pl-12 pr-4 text-white placeholder:text-brand-light/20 focus:outline-none focus:border-brand-primary/50 transition-colors`}
                   required
                 />
               </div>
+              {checkoutError && (
+                <p className="text-brand-secondary text-[10px] mt-2 ml-1 font-bold uppercase tracking-wider">
+                  {checkoutError}
+                </p>
+              )}
             </div>
 
             <button 
@@ -367,13 +401,16 @@ const CartPage: React.FC = () => {
                 {orderHistory.map((order, idx) => (
                   <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-4">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-brand-light/40 text-[10px] uppercase font-bold tracking-wider">{order.date}</span>
+                      <div className="flex flex-col">
+                        <span className="text-brand-light/40 text-[10px] uppercase font-bold tracking-wider">{order.date}</span>
+                        {order.id && <span className="text-brand-primary text-[8px] font-mono font-bold uppercase tracking-widest">#{order.id}</span>}
+                      </div>
                       <span className="text-brand-primary font-bold text-sm">${order.total.toFixed(2)}</span>
                     </div>
                     <div className="flex flex-wrap gap-1">
                       {order.items.map((item, i) => (
                         <span key={i} className="text-[10px] text-brand-light/60 bg-white/5 px-2 py-0.5 rounded-md border border-white/5">
-                          {item.quantity}x {item.beverage.name}
+                          {item.quantity}x {item.chicken?.name || 'Unknown Item'}
                         </span>
                       ))}
                     </div>

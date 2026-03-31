@@ -1,11 +1,11 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { CartItem, Beverage } from '../types';
+import { CartItem, Chicken } from '../types';
 
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (beverage: Beverage, quantity: number) => void;
-  removeFromCart: (beverageId: number) => void;
+  addToCart: (chicken: Chicken, quantity: number) => void;
+  removeFromCart: (chickenId: number) => void;
   clearCart: () => void;
   totalItems: number;
 }
@@ -15,9 +15,9 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
 
-  const addToCart = (beverage: Beverage, quantity: number) => {
+  const addToCart = (chicken: Chicken, quantity: number) => {
     setCart(prevCart => {
-      const existingItemIndex = prevCart.findIndex(item => item.beverage.id === beverage.id);
+      const existingItemIndex = prevCart.findIndex(item => item.chicken.id === chicken.id);
       if (existingItemIndex > -1) {
         return prevCart.map((item, index) => 
           index === existingItemIndex 
@@ -25,12 +25,12 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             : item
         );
       }
-      return [...prevCart, { beverage, quantity }];
+      return [...prevCart, { chicken, quantity }];
     });
   };
 
-  const removeFromCart = (beverageId: number) => {
-    setCart(prevCart => prevCart.filter(item => item.beverage.id !== beverageId));
+  const removeFromCart = (chickenId: number) => {
+    setCart(prevCart => prevCart.filter(item => item.chicken.id !== chickenId));
   };
 
   const clearCart = () => {

@@ -28,7 +28,7 @@ const SpecialOfferBanner: React.FC = () => {
         >
           <div className="container mx-auto px-6 py-3 pt-20 md:pt-24 flex items-center justify-center text-center">
             <p className="font-bold text-sm md:text-base pr-8">
-              🔥 SPECIAL OFFER: Buy 2 Signature Drinks, Get 1 FREE! Limited time only. 🔥
+              🔥 SPECIAL OFFER: Buy 2 Signature Chickens, Get 1 FREE! Limited time only. 🔥
             </p>
             <button
               onClick={handleDismiss}

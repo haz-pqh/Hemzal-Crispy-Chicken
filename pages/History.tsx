@@ -5,6 +5,7 @@ import { ShoppingBag, ArrowLeft, Package, Calendar, DollarSign } from 'lucide-re
 import { CartItem } from '../types';
 
 interface Order {
+  id?: string;
   items: CartItem[];
   total: number;
   date: string;
@@ -16,7 +17,20 @@ const HistoryPage: React.FC = () => {
   useEffect(() => {
     const saved = localStorage.getItem('hemzal_order_history');
     if (saved) {
-      setOrderHistory(JSON.parse(saved));
+      try {
+        const parsed = JSON.parse(saved);
+        // Migrate old data if necessary
+        const migrated = parsed.map((order: any) => ({
+          ...order,
+          items: order.items.map((item: any) => ({
+            ...item,
+            chicken: item.chicken || item.beverage // Fallback for old data
+          }))
+        }));
+        setOrderHistory(migrated);
+      } catch (e) {
+        console.error('Failed to parse order history:', e);
+      }
     }
   }, []);
 
@@ -35,11 +49,11 @@ const HistoryPage: React.FC = () => {
           You haven't placed any orders yet. Once you do, they'll appear here!
         </p>
         <button
-          onClick={() => window.dispatchEvent(new CustomEvent('changePage', { detail: 'Drinks' }))}
+          onClick={() => window.dispatchEvent(new CustomEvent('changePage', { detail: 'Chickens' }))}
           className="bg-brand-primary text-white font-bold py-4 px-8 rounded-2xl hover:shadow-[0px_0px_20px_rgba(255,69,0,0.4)] transition-all duration-300 flex items-center gap-2"
         >
           <ArrowLeft className="w-5 h-5" />
-          Browse Drinks
+          Browse Chickens
         </button>
       </div>
     );
@@ -50,7 +64,7 @@ const HistoryPage: React.FC = () => {
       <div className="flex items-center justify-between mb-12">
         <div>
           <h1 className="text-4xl font-bold text-white tracking-tight mb-2">Order History</h1>
-          <p className="text-brand-light/40">Your last {orderHistory.length} refreshing experiences</p>
+          <p className="text-brand-light/40">Your last {orderHistory.length} crispy experiences</p>
         </div>
         <div className="hidden sm:block">
           <ShoppingBag className="w-12 h-12 text-brand-primary/20" />
@@ -75,6 +89,7 @@ const HistoryPage: React.FC = () => {
                   <div>
                     <p className="text-brand-light/40 text-xs font-bold uppercase tracking-widest mb-1">Order Date</p>
                     <p className="text-white font-bold">{order.date}</p>
+                    {order.id && <p className="text-brand-primary text-[10px] font-mono font-bold mt-1 uppercase tracking-widest">#{order.id}</p>}
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
@@ -98,15 +113,15 @@ const HistoryPage: React.FC = () => {
                     <div key={i} className="flex items-center gap-4 bg-white/5 rounded-2xl p-3 border border-white/5 group-hover:border-white/10 transition-colors">
                       <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0">
                         <img 
-                          src={item.beverage.imageUrl} 
-                          alt={item.beverage.name} 
+                          src={item.chicken?.imageUrl} 
+                          alt={item.chicken?.name || 'Unknown Item'} 
                           className="w-full h-full object-cover"
                           referrerPolicy="no-referrer"
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-white font-bold text-sm truncate">{item.beverage.name}</p>
-                        <p className="text-brand-primary text-xs font-bold">{item.quantity}x • {item.beverage.price}</p>
+                        <p className="text-white font-bold text-sm truncate">{item.chicken?.name || 'Unknown Item'}</p>
+                        <p className="text-brand-primary text-xs font-bold">{item.quantity}x • {item.chicken?.price || '$0'}</p>
                       </div>
                     </div>
                   ))}
@@ -119,7 +134,7 @@ const HistoryPage: React.FC = () => {
 
       <div className="mt-16 text-center">
         <button
-          onClick={() => window.dispatchEvent(new CustomEvent('changePage', { detail: 'Drinks' }))}
+          onClick={() => window.dispatchEvent(new CustomEvent('changePage', { detail: 'Chickens' }))}
           className="inline-flex items-center gap-2 text-brand-light/40 hover:text-brand-primary transition-colors font-bold"
         >
           <ArrowLeft className="w-4 h-4" />

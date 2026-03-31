@@ -6,12 +6,13 @@ import { motion, AnimatePresence, Transition } from 'framer-motion';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
-import Drinks from './pages/Drinks';
+import Chickens from './pages/Chickens';
 import AboutPage from './pages/About';
 import Contact from './pages/Contact';
 import CartPage from './pages/Cart';
 import HistoryPage from './pages/History';
 import LoadingSpinner from './components/LoadingSpinner';
+import BackToTop from './components/BackToTop';
 import { CartProvider } from './contexts/CartContext';
 
 const App: React.FC = () => {
@@ -63,8 +64,8 @@ const App: React.FC = () => {
     switch (page) {
       case 'Home':
         return <Home setPage={handlePageChange} />;
-      case 'Drinks':
-        return <Drinks />;
+      case 'Chickens':
+        return <Chickens />;
       case 'About':
         return <AboutPage setPage={handlePageChange} />;
       case 'Contact':
@@ -102,6 +103,7 @@ const App: React.FC = () => {
           </AnimatePresence>
         </main>
         <Footer />
+        <BackToTop />
       </div>
     </CartProvider>
   );

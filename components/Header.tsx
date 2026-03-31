@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage }) => {
     };
   }, [isMenuOpen]);
 
-  const navItems = ['Home', 'Drinks', 'About', 'History', 'Contact'];
+  const navItems = ['Home', 'Chickens', 'About', 'History', 'Contact'];
 
   const menuVariants: Variants = {
     hidden: { opacity: 0, y: '-100%' },
@@ -131,7 +131,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage }) => {
             </button>
           </nav>
           <motion.button 
-            onClick={() => handleNavClick('Drinks')}
+            onClick={() => handleNavClick('Chickens')}
             whileHover={{ scale: 1.05, boxShadow: "0px 0px 20px rgba(255, 69, 0, 0.5)" }}
             whileTap={{ scale: 0.95 }}
             className="hidden md:block bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-bold py-2 px-6 rounded-full transition-shadow duration-300"
@@ -196,7 +196,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage }) => {
               ))}
               <motion.button
                 variants={menuItemVariants}
-                onClick={() => { handleNavClick('Drinks'); setIsMenuOpen(false); }}
+                onClick={() => { handleNavClick('Chickens'); setIsMenuOpen(false); }}
                 whileHover={{ scale: 1.05, boxShadow: "0px 0px 20px rgba(255, 69, 0, 0.5)" }}
                 whileTap={{ scale: 0.95 }}
                 className="mt-6 bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-bold py-3 px-8 rounded-full text-lg transition-shadow duration-300"

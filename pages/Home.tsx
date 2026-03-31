@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Hero from '../components/Hero';
-import FeaturedBeverages from '../components/FeaturedBeverages';
+import FeaturedChickens from '../components/FeaturedChickens';
 import About from '../components/About';
 import SpecialOfferBanner from '../components/SpecialOfferBanner';
 
@@ -14,7 +14,7 @@ const Home: React.FC<HomeProps> = ({ setPage }) => {
     <>
       <SpecialOfferBanner />
       <Hero setPage={setPage} />
-      <FeaturedBeverages />
+      <FeaturedChickens />
       <About setPage={setPage} />
     </>
   );

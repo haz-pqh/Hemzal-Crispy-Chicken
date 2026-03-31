@@ -1,5 +1,5 @@
 
-export interface Beverage {
+export interface Chicken {
   id: number;
   name: string;
   description: string;
@@ -10,12 +10,12 @@ export interface Beverage {
   ingredients?: string[];
   nutritionalFacts?: {
     calories: string;
-    sugar: string;
+    protein: string;
     fat: string;
   };
 }
 
 export interface CartItem {
-  beverage: Beverage;
+  chicken: Chicken;
   quantity: number;
 }

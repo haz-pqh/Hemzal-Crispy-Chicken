@@ -1,9 +1,9 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import FeaturedBeverages from '../components/FeaturedBeverages';
+import FeaturedChickens from '../components/FeaturedChickens';
 
-const Drinks: React.FC = () => {
+const Chickens: React.FC = () => {
   return (
     <div className="pt-32 min-h-screen">
       <motion.div
@@ -16,12 +16,12 @@ const Drinks: React.FC = () => {
           Our Full Collection
         </h1>
         <p className="text-lg text-brand-light/70 mt-4 max-w-2xl mx-auto">
-          Explore our entire range of handcrafted beverages, each with a unique story and flavor profile.
+          Explore our entire range of crispy, juicy chickens, each prepared with our signature spice blends.
         </p>
       </motion.div>
-      <FeaturedBeverages />
+      <FeaturedChickens />
     </div>
   );
 };
 
-export default Drinks;
+export default Chickens;

@@ -1,133 +1,133 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Beverage } from '../types';
+import { Chicken } from '../types';
 import { useCart } from '../contexts/CartContext';
 
-const beverages: Beverage[] = [
+const chickens: Chicken[] = [
   {
     id: 1,
-    name: "Spicy Mango Tango",
-    description: "A fiery blend of sweet mango and a hint of chili, perfect for the adventurous.",
-    imageUrl: "https://images.unsplash.com/photo-1600096194534-95cf5ece1469?q=80&w=800",
-    price: "$5.99",
-    category: "Exotic",
-    color: "from-yellow-400 to-orange-500",
-    ingredients: ["Fresh Mango Pulp", "Chili Flakes", "Lime Juice", "Agave Syrup", "Sparkling Water"],
+    name: "Classic Crispy Drumstick",
+    description: "Our signature drumstick, marinated in 11 secret herbs and spices, fried to golden perfection.",
+    imageUrl: "https://images.unsplash.com/photo-1562967914-608f82629710?q=80&w=800",
+    price: "$3.99",
+    category: "Classic",
+    color: "from-orange-400 to-red-500",
+    ingredients: ["Fresh Chicken Drumstick", "Secret Spice Blend", "Buttermilk", "Flour", "Vegetable Oil"],
     nutritionalFacts: {
-      calories: "120 kcal",
-      sugar: "24g",
-      fat: "0g"
+      calories: "280 kcal",
+      protein: "22g",
+      fat: "18g"
     }
   },
   {
     id: 2,
-    name: "Electric Blue Lemonade",
-    description: "A zesty and vibrant lemonade that's as electrifying as it looks.",
-    imageUrl: "https://images.unsplash.com/photo-1595981266686-0cf387d0a623?q=80&w=800",
-    price: "$4.50",
-    category: "Classic",
-    color: "from-blue-400 to-cyan-400",
-    ingredients: ["Lemon Juice", "Blue Curacao Syrup", "Mint Leaves", "Cane Sugar", "Crushed Ice"],
+    name: "Spicy Buffalo Wings",
+    description: "Tossed in our house-made spicy buffalo sauce, served with a side of cooling ranch.",
+    imageUrl: "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?q=80&w=800",
+    price: "$8.50",
+    category: "Wings",
+    color: "from-red-500 to-orange-600",
+    ingredients: ["Chicken Wings", "Buffalo Sauce", "Cayenne Pepper", "Butter", "Garlic Powder"],
     nutritionalFacts: {
-      calories: "150 kcal",
-      sugar: "32g",
-      fat: "0g"
+      calories: "450 kcal",
+      protein: "35g",
+      fat: "32g"
     }
   },
   {
     id: 3,
-    name: "Crimson Berry Blast",
-    description: "A rich concoction of mixed berries, bursting with antioxidants and flavor.",
-    imageUrl: "https://images.unsplash.com/photo-1621495493132-2fc1fe9a0f44?q=80&w=800",
-    price: "$6.25",
-    category: "Smoothie",
-    color: "from-red-500 to-pink-500",
-    ingredients: ["Raspberries", "Blueberries", "Strawberries", "Pomegranate Juice", "Honey"],
+    name: "Honey Garlic Thighs",
+    description: "Juicy chicken thighs glazed with a sweet and savory honey garlic sauce.",
+    imageUrl: "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?q=80&w=800",
+    price: "$5.25",
+    category: "Glazed",
+    color: "from-yellow-500 to-amber-600",
+    ingredients: ["Chicken Thighs", "Natural Honey", "Minced Garlic", "Soy Sauce", "Ginger"],
     nutritionalFacts: {
-      calories: "140 kcal",
-      sugar: "28g",
-      fat: "0.5g"
+      calories: "320 kcal",
+      protein: "28g",
+      fat: "14g"
     }
   },
   {
     id: 4,
-    name: "Golden Ginger Fizz",
-    description: "A refreshing and sparkling ginger ale with a touch of golden turmeric.",
-    imageUrl: "https://images.unsplash.com/photo-1633596753085-05d5c02297c8?q=80&w=800",
-    price: "$5.50",
-    category: "Sparkling",
-    color: "from-amber-400 to-yellow-500",
-    ingredients: ["Fresh Ginger Root", "Turmeric Powder", "Lemon Zest", "Sparkling Water", "Maple Syrup"],
+    name: "Lemon Herb Breast",
+    description: "Grilled chicken breast infused with fresh lemon zest and garden herbs.",
+    imageUrl: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=800",
+    price: "$7.50",
+    category: "Grilled",
+    color: "from-green-400 to-yellow-500",
+    ingredients: ["Chicken Breast", "Lemon Zest", "Rosemary", "Thyme", "Olive Oil"],
     nutritionalFacts: {
-      calories: "90 kcal",
-      sugar: "18g",
-      fat: "0g"
+      calories: "210 kcal",
+      protein: "42g",
+      fat: "4g"
     }
   },
   {
     id: 5,
-    name: "Matcha Zen Mist",
-    description: "A calming and earthy matcha green tea with a hint of vanilla and almond milk.",
-    imageUrl: "https://images.unsplash.com/photo-1582743947481-91981ca38f45?q=80&w=800",
-    price: "$6.99",
-    category: "Tea",
-    color: "from-green-400 to-emerald-500",
-    ingredients: ["Ceremonial Matcha", "Almond Milk", "Vanilla Extract", "Agave Syrup"],
+    name: "Korean Fried Chicken",
+    description: "Double-fried for extra crunch, coated in a spicy and sweet gochujang glaze.",
+    imageUrl: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800",
+    price: "$9.99",
+    category: "Specialty",
+    color: "from-red-600 to-rose-700",
+    ingredients: ["Chicken Pieces", "Gochujang", "Rice Flour", "Sesame Seeds", "Garlic"],
     nutritionalFacts: {
-      calories: "110 kcal",
-      sugar: "12g",
-      fat: "3g"
+      calories: "520 kcal",
+      protein: "38g",
+      fat: "28g"
     }
   },
   {
     id: 6,
-    name: "Midnight Espresso Tonic",
-    description: "A bold espresso shot with sparkling tonic water and a twist of orange.",
-    imageUrl: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?q=80&w=800",
-    price: "$5.25",
-    category: "Coffee",
-    color: "from-zinc-700 to-zinc-900",
-    ingredients: ["Double Espresso", "Tonic Water", "Orange Peel", "Ice Cubes"],
+    name: "Southern Fried Strips",
+    description: "Tender chicken strips breaded in a traditional southern-style cornmeal mix.",
+    imageUrl: "https://images.unsplash.com/photo-1562967914-608f82629710?q=80&w=800",
+    price: "$6.25",
+    category: "Strips",
+    color: "from-amber-400 to-orange-500",
+    ingredients: ["Chicken Tenderloins", "Cornmeal", "Black Pepper", "Paprika", "Buttermilk"],
     nutritionalFacts: {
-      calories: "45 kcal",
-      sugar: "10g",
-      fat: "0g"
+      calories: "380 kcal",
+      protein: "32g",
+      fat: "20g"
     }
   },
   {
     id: 7,
-    name: "Tropical Sunrise",
-    description: "A layered beauty of pineapple, orange, and grenadine, capturing the essence of a beach morning.",
-    imageUrl: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=800",
-    price: "$5.75",
-    category: "Exotic",
-    color: "from-orange-400 to-red-400",
-    ingredients: ["Pineapple Juice", "Orange Juice", "Grenadine", "Maraschino Cherry"],
+    name: "Teriyaki Glazed Wings",
+    description: "Sweet and sticky teriyaki glaze with toasted sesame seeds and green onions.",
+    imageUrl: "https://images.unsplash.com/photo-1527477396000-e27163b481c2?q=80&w=800",
+    price: "$8.75",
+    category: "Wings",
+    color: "from-zinc-700 to-zinc-900",
+    ingredients: ["Chicken Wings", "Teriyaki Sauce", "Sesame Seeds", "Green Onions", "Ginger"],
     nutritionalFacts: {
-      calories: "160 kcal",
-      sugar: "35g",
-      fat: "0g"
+      calories: "410 kcal",
+      protein: "34g",
+      fat: "26g"
     }
   },
   {
     id: 8,
-    name: "Cucumber Mint Cooler",
-    description: "The ultimate refresher with crisp cucumber and cooling garden mint.",
-    imageUrl: "https://images.unsplash.com/photo-1516746412402-855d212af497?q=80&w=800",
-    price: "$4.25",
-    category: "Classic",
-    color: "from-green-200 to-green-400",
-    ingredients: ["Cucumber Slices", "Fresh Mint", "Lime Juice", "Soda Water"],
+    name: "Garlic Parmesan Bites",
+    description: "Bite-sized chicken pieces tossed in garlic butter and aged parmesan cheese.",
+    imageUrl: "https://images.unsplash.com/photo-1569058242253-92a9c71f9867?q=80&w=800",
+    price: "$7.25",
+    category: "Specialty",
+    color: "from-yellow-200 to-yellow-400",
+    ingredients: ["Chicken Breast Bites", "Parmesan Cheese", "Garlic Butter", "Parsley", "Breadcrumbs"],
     nutritionalFacts: {
-      calories: "20 kcal",
-      sugar: "2g",
-      fat: "0g"
+      calories: "350 kcal",
+      protein: "30g",
+      fat: "22g"
     }
   }
 ];
 
-const BeverageCard: React.FC<{ beverage: Beverage; index: number; onSelect: (bev: Beverage) => void }> = ({ beverage, index, onSelect }) => {
+const ChickenCard: React.FC<{ chicken: Chicken; index: number; onSelect: (chk: Chicken) => void }> = ({ chicken, index, onSelect }) => {
     const cardVariants = {
         hidden: { opacity: 0, y: 50 },
         visible: { 
@@ -144,20 +144,20 @@ const BeverageCard: React.FC<{ beverage: Beverage; index: number; onSelect: (bev
             whileInView="visible"
             viewport={{ once: true }}
             whileHover={{ y: -10, scale: 1.03 }}
-            onClick={() => onSelect(beverage)}
+            onClick={() => onSelect(chicken)}
             className="group relative rounded-3xl overflow-hidden shadow-lg bg-zinc-900 cursor-pointer"
         >
-            <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${beverage.color}`}></div>
-            <img src={`${beverage.imageUrl}&auto=format&fit=crop&w=800&h=900`} alt={beverage.name} className="w-full h-96 object-cover transform group-hover:scale-110 transition-transform duration-500" />
+            <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${chicken.color}`}></div>
+            <img src={`${chicken.imageUrl}&auto=format&fit=crop&w=800&h=900`} alt={chicken.name} className="w-full h-96 object-cover transform group-hover:scale-110 transition-transform duration-500" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
             <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-white uppercase tracking-widest border border-white/10">
-                {beverage.category}
+                {chicken.category}
             </div>
             <div className="absolute bottom-0 left-0 p-6 text-white w-full">
-                <h3 className="text-2xl font-bold font-display">{beverage.name}</h3>
-                <p className="text-brand-light/80 mt-2 line-clamp-2">{beverage.description}</p>
+                <h3 className="text-2xl font-bold font-display">{chicken.name}</h3>
+                <p className="text-brand-light/80 mt-2 line-clamp-2">{chicken.description}</p>
                 <div className="mt-4 flex items-center justify-between">
-                    <span className="text-brand-primary font-bold text-xl">{beverage.price}</span>
+                    <span className="text-brand-primary font-bold text-xl">{chicken.price}</span>
                     <div className="flex items-center text-brand-primary font-semibold text-sm">
                         View Details
                         <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
@@ -168,32 +168,32 @@ const BeverageCard: React.FC<{ beverage: Beverage; index: number; onSelect: (bev
     );
 };
 
-const FeaturedBeverages: React.FC = () => {
-  const [selectedBev, setSelectedBev] = useState<Beverage | null>(null);
+const FeaturedChickens: React.FC = () => {
+  const [selectedChk, setSelectedChk] = useState<Chicken | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [activeCategory, setActiveCategory] = useState<string>("All");
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 10]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 15]);
   const { addToCart } = useCart();
 
-  const categories = ["All", ...Array.from(new Set(beverages.map(b => b.category)))];
+  const categories = ["All", ...Array.from(new Set(chickens.map(b => b.category)))];
 
-  const filteredBeverages = beverages.filter(bev => {
-    const priceValue = parseFloat(bev.price.replace('$', ''));
-    const matchesCategory = activeCategory === "All" || bev.category === activeCategory;
+  const filteredChickens = chickens.filter(chk => {
+    const priceValue = parseFloat(chk.price.replace('$', ''));
+    const matchesCategory = activeCategory === "All" || chk.category === activeCategory;
     const matchesPrice = priceValue >= priceRange[0] && priceValue <= priceRange[1];
     return matchesCategory && matchesPrice;
   });
 
   const handleAddToCart = () => {
-    if (selectedBev) {
-      addToCart(selectedBev, quantity);
-      setSelectedBev(null);
+    if (selectedChk) {
+      addToCart(selectedChk, quantity);
+      setSelectedChk(null);
       setQuantity(1);
     }
   };
 
   return (
-    <section id="drinks" className="py-20 sm:py-32 bg-brand-dark">
+    <section id="chickens" className="py-20 sm:py-32 bg-brand-dark">
       <div className="container mx-auto px-6">
         <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -202,9 +202,9 @@ const FeaturedBeverages: React.FC = () => {
             transition={{ duration: 0.5 }}
             className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-extrabold font-display">Our Signature Collection</h2>
+          <h2 className="text-4xl md:text-5xl font-extrabold font-display">Our Signature Chickens</h2>
           <p className="text-lg text-brand-light/70 mt-4 max-w-2xl mx-auto">
-            Crafted to perfection. Each sip is an experience waiting to happen.
+            Crispy, juicy, and seasoned to perfection. Discover your new favorite.
           </p>
         </motion.div>
 
@@ -234,7 +234,7 @@ const FeaturedBeverages: React.FC = () => {
             <input 
               type="range" 
               min="0" 
-              max="10" 
+              max="15" 
               step="0.5"
               value={priceRange[1]}
               onChange={(e) => setPriceRange([priceRange[0], parseFloat(e.target.value)])}
@@ -245,21 +245,21 @@ const FeaturedBeverages: React.FC = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <AnimatePresence mode="popLayout">
-            {filteredBeverages.map((bev, index) => (
-              <BeverageCard key={bev.id} beverage={bev} index={index} onSelect={setSelectedBev} />
+            {filteredChickens.map((chk, index) => (
+              <ChickenCard key={chk.id} chicken={chk} index={index} onSelect={setSelectedChk} />
             ))}
           </AnimatePresence>
         </div>
 
-        {filteredBeverages.length === 0 && (
+        {filteredChickens.length === 0 && (
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="text-center py-20"
           >
-            <p className="text-brand-light/40 text-xl italic">No beverages match your current filters.</p>
+            <p className="text-brand-light/40 text-xl italic">No chickens match your current filters.</p>
             <button 
-              onClick={() => { setActiveCategory("All"); setPriceRange([0, 10]); }}
+              onClick={() => { setActiveCategory("All"); setPriceRange([0, 15]); }}
               className="mt-4 text-brand-primary font-bold hover:underline"
             >
               Reset Filters
@@ -268,24 +268,24 @@ const FeaturedBeverages: React.FC = () => {
         )}
 
         <AnimatePresence>
-          {selectedBev && (
+          {selectedChk && (
             <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
                 <motion.div 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    onClick={() => setSelectedBev(null)}
+                    onClick={() => setSelectedChk(null)}
                     className="absolute inset-0 bg-black/90 backdrop-blur-sm"
                 />
                 <motion.div 
-                    layoutId={`bev-${selectedBev.id}`}
+                    layoutId={`chk-${selectedChk.id}`}
                     initial={{ opacity: 0, scale: 0.9, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.9, y: 20 }}
                     className="relative bg-zinc-900 rounded-3xl overflow-hidden max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-white/10"
                 >
                     <button 
-                        onClick={() => setSelectedBev(null)}
+                        onClick={() => setSelectedChk(null)}
                         className="absolute top-4 right-4 z-50 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full transition-colors"
                     >
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
@@ -293,18 +293,18 @@ const FeaturedBeverages: React.FC = () => {
 
                     <div className="flex flex-col md:flex-row">
                         <div className="md:w-1/2 h-64 md:h-auto">
-                            <img src={`${selectedBev.imageUrl}&auto=format&fit=crop&w=1000&h=1200`} alt={selectedBev.name} className="w-full h-full object-cover" />
+                            <img src={`${selectedChk.imageUrl}&auto=format&fit=crop&w=1000&h=1200`} alt={selectedChk.name} className="w-full h-full object-cover" />
                         </div>
                         <div className="md:w-1/2 p-8 md:p-12">
-                            <div className={`w-16 h-1 bg-gradient-to-r ${selectedBev.color} mb-6`}></div>
-                            <h3 className="text-4xl font-bold font-display text-white mb-4">{selectedBev.name}</h3>
-                            <p className="text-brand-light/70 text-lg mb-8 leading-relaxed">{selectedBev.description}</p>
+                            <div className={`w-16 h-1 bg-gradient-to-r ${selectedChk.color} mb-6`}></div>
+                            <h3 className="text-4xl font-bold font-display text-white mb-4">{selectedChk.name}</h3>
+                            <p className="text-brand-light/70 text-lg mb-8 leading-relaxed">{selectedChk.description}</p>
                             
                             <div className="space-y-8">
                                 <div>
                                     <h4 className="text-brand-primary font-bold uppercase tracking-wider text-sm mb-4">Ingredients</h4>
                                     <div className="flex flex-wrap gap-2">
-                                        {selectedBev.ingredients?.map((ing, i) => (
+                                        {selectedChk.ingredients?.map((ing, i) => (
                                             <span key={i} className="bg-white/5 border border-white/10 px-3 py-1 rounded-full text-sm text-brand-light/90">
                                                 {ing}
                                             </span>
@@ -317,15 +317,15 @@ const FeaturedBeverages: React.FC = () => {
                                     <div className="grid grid-cols-3 gap-4">
                                         <div className="bg-white/5 p-4 rounded-2xl border border-white/5 text-center">
                                             <p className="text-xs text-brand-light/50 uppercase mb-1">Calories</p>
-                                            <p className="text-lg font-bold text-white">{selectedBev.nutritionalFacts?.calories}</p>
+                                            <p className="text-lg font-bold text-white">{selectedChk.nutritionalFacts?.calories}</p>
                                         </div>
                                         <div className="bg-white/5 p-4 rounded-2xl border border-white/5 text-center">
-                                            <p className="text-xs text-brand-light/50 uppercase mb-1">Sugar</p>
-                                            <p className="text-lg font-bold text-white">{selectedBev.nutritionalFacts?.sugar}</p>
+                                            <p className="text-xs text-brand-light/50 uppercase mb-1">Protein</p>
+                                            <p className="text-lg font-bold text-white">{selectedChk.nutritionalFacts?.protein}</p>
                                         </div>
                                         <div className="bg-white/5 p-4 rounded-2xl border border-white/5 text-center">
                                             <p className="text-xs text-brand-light/50 uppercase mb-1">Fat</p>
-                                            <p className="text-lg font-bold text-white">{selectedBev.nutritionalFacts?.fat}</p>
+                                            <p className="text-lg font-bold text-white">{selectedChk.nutritionalFacts?.fat}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -362,7 +362,7 @@ const FeaturedBeverages: React.FC = () => {
                             </div>
 
                             <button 
-                                onClick={() => setSelectedBev(null)}
+                                onClick={() => setSelectedChk(null)}
                                 className="mt-4 w-full text-brand-light/50 hover:text-white transition-colors duration-300 text-sm font-semibold"
                             >
                                 Close Details
@@ -378,4 +378,4 @@ const FeaturedBeverages: React.FC = () => {
   );
 };
 
-export default FeaturedBeverages;
+export default FeaturedChickens;
