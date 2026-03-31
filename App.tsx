@@ -9,9 +9,32 @@ import Home from './pages/Home';
 import Drinks from './pages/Drinks';
 import AboutPage from './pages/About';
 import Contact from './pages/Contact';
+import CartPage from './pages/Cart';
+import LoadingSpinner from './components/LoadingSpinner';
+import { CartProvider } from './contexts/CartContext';
 
 const App: React.FC = () => {
   const [page, setPage] = useState('Home');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handlePageChange = (newPage: string) => {
+    if (newPage === page) return;
+    setIsLoading(true);
+    // Simulate a brief loading period for UX
+    setTimeout(() => {
+      setPage(newPage);
+      setIsLoading(false);
+    }, 600);
+  };
+
+  // Listen for custom page change events
+  React.useEffect(() => {
+    const handleCustomPageChange = (e: any) => {
+      handlePageChange(e.detail);
+    };
+    window.addEventListener('changePage', handleCustomPageChange);
+    return () => window.removeEventListener('changePage', handleCustomPageChange);
+  }, [page]);
 
   const pageVariants = {
     initial: {
@@ -38,37 +61,46 @@ const App: React.FC = () => {
   const renderPage = () => {
     switch (page) {
       case 'Home':
-        return <Home setPage={setPage} />;
+        return <Home setPage={handlePageChange} />;
       case 'Drinks':
         return <Drinks />;
       case 'About':
-        return <AboutPage setPage={setPage} />;
+        return <AboutPage setPage={handlePageChange} />;
       case 'Contact':
         return <Contact />;
+      case 'Cart':
+        return <CartPage />;
       default:
-        return <Home setPage={setPage} />;
+        return <Home setPage={handlePageChange} />;
     }
   };
 
   return (
-    <div className="bg-brand-dark min-h-screen overflow-x-hidden">
-      <Header currentPage={page} setPage={setPage} />
-      <main>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={page}
-            initial="initial"
-            animate="in"
-            exit="out"
-            variants={pageVariants}
-            transition={pageTransition}
-          >
-            {renderPage()}
-          </motion.div>
+    <CartProvider>
+      <div className="bg-brand-dark min-h-screen overflow-x-hidden">
+        <Header currentPage={page} setPage={handlePageChange} />
+        <AnimatePresence>
+          {isLoading && <LoadingSpinner />}
         </AnimatePresence>
-      </main>
-      <Footer />
-    </div>
+        <main>
+          <AnimatePresence mode="wait">
+            {!isLoading && (
+              <motion.div
+                key={page}
+                initial="initial"
+                animate="in"
+                exit="out"
+                variants={pageVariants}
+                transition={pageTransition}
+              >
+                {renderPage()}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </main>
+        <Footer />
+      </div>
+    </CartProvider>
   );
 };
 

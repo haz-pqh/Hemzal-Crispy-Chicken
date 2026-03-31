@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
+import { ShoppingCart } from 'lucide-react';
+import { useCart } from '../contexts/CartContext';
 
 interface HeaderProps {
   currentPage: string;
@@ -9,6 +11,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ currentPage, setPage }) => {
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { totalItems } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -115,6 +118,17 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage }) => {
                 )}
               </button>
             ))}
+            <button 
+              onClick={() => handleNavClick('Cart')}
+              className={`relative text-brand-light hover:text-brand-primary transition-colors duration-300 ${currentPage === 'Cart' ? 'text-brand-primary' : ''}`}
+            >
+              <ShoppingCart className="w-6 h-6" />
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-2 bg-brand-primary text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
+                  {totalItems}
+                </span>
+              )}
+            </button>
           </nav>
           <motion.button 
             onClick={() => handleNavClick('Drinks')}
@@ -124,7 +138,18 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage }) => {
           >
             Order Now
           </motion.button>
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-4">
+            <button 
+              onClick={() => handleNavClick('Cart')}
+              className={`relative text-brand-light hover:text-brand-primary transition-colors duration-300 ${currentPage === 'Cart' ? 'text-brand-primary' : ''}`}
+            >
+              <ShoppingCart className="w-6 h-6" />
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-2 bg-brand-primary text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
+                  {totalItems}
+                </span>
+              )}
+            </button>
             <button onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle menu" className="z-50 relative w-6 h-6">
               <motion.span
                   className="absolute h-0.5 w-full bg-white rounded-full"
