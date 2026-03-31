@@ -5,6 +5,7 @@ export interface Beverage {
   description: string;
   imageUrl: string;
   price: string;
+  category: string;
   color: string;
   ingredients?: string[];
   nutritionalFacts?: {

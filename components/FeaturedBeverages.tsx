@@ -11,6 +11,7 @@ const beverages: Beverage[] = [
     description: "A fiery blend of sweet mango and a hint of chili, perfect for the adventurous.",
     imageUrl: "https://images.unsplash.com/photo-1600096194534-95cf5ece1469?q=80&w=800",
     price: "$5.99",
+    category: "Exotic",
     color: "from-yellow-400 to-orange-500",
     ingredients: ["Fresh Mango Pulp", "Chili Flakes", "Lime Juice", "Agave Syrup", "Sparkling Water"],
     nutritionalFacts: {
@@ -25,6 +26,7 @@ const beverages: Beverage[] = [
     description: "A zesty and vibrant lemonade that's as electrifying as it looks.",
     imageUrl: "https://images.unsplash.com/photo-1595981266686-0cf387d0a623?q=80&w=800",
     price: "$4.50",
+    category: "Classic",
     color: "from-blue-400 to-cyan-400",
     ingredients: ["Lemon Juice", "Blue Curacao Syrup", "Mint Leaves", "Cane Sugar", "Crushed Ice"],
     nutritionalFacts: {
@@ -39,6 +41,7 @@ const beverages: Beverage[] = [
     description: "A rich concoction of mixed berries, bursting with antioxidants and flavor.",
     imageUrl: "https://images.unsplash.com/photo-1621495493132-2fc1fe9a0f44?q=80&w=800",
     price: "$6.25",
+    category: "Smoothie",
     color: "from-red-500 to-pink-500",
     ingredients: ["Raspberries", "Blueberries", "Strawberries", "Pomegranate Juice", "Honey"],
     nutritionalFacts: {
@@ -53,6 +56,7 @@ const beverages: Beverage[] = [
     description: "A refreshing and sparkling ginger ale with a touch of golden turmeric.",
     imageUrl: "https://images.unsplash.com/photo-1633596753085-05d5c02297c8?q=80&w=800",
     price: "$5.50",
+    category: "Sparkling",
     color: "from-amber-400 to-yellow-500",
     ingredients: ["Fresh Ginger Root", "Turmeric Powder", "Lemon Zest", "Sparkling Water", "Maple Syrup"],
     nutritionalFacts: {
@@ -61,6 +65,66 @@ const beverages: Beverage[] = [
       fat: "0g"
     }
   },
+  {
+    id: 5,
+    name: "Matcha Zen Mist",
+    description: "A calming and earthy matcha green tea with a hint of vanilla and almond milk.",
+    imageUrl: "https://images.unsplash.com/photo-1582743947481-91981ca38f45?q=80&w=800",
+    price: "$6.99",
+    category: "Tea",
+    color: "from-green-400 to-emerald-500",
+    ingredients: ["Ceremonial Matcha", "Almond Milk", "Vanilla Extract", "Agave Syrup"],
+    nutritionalFacts: {
+      calories: "110 kcal",
+      sugar: "12g",
+      fat: "3g"
+    }
+  },
+  {
+    id: 6,
+    name: "Midnight Espresso Tonic",
+    description: "A bold espresso shot with sparkling tonic water and a twist of orange.",
+    imageUrl: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?q=80&w=800",
+    price: "$5.25",
+    category: "Coffee",
+    color: "from-zinc-700 to-zinc-900",
+    ingredients: ["Double Espresso", "Tonic Water", "Orange Peel", "Ice Cubes"],
+    nutritionalFacts: {
+      calories: "45 kcal",
+      sugar: "10g",
+      fat: "0g"
+    }
+  },
+  {
+    id: 7,
+    name: "Tropical Sunrise",
+    description: "A layered beauty of pineapple, orange, and grenadine, capturing the essence of a beach morning.",
+    imageUrl: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=800",
+    price: "$5.75",
+    category: "Exotic",
+    color: "from-orange-400 to-red-400",
+    ingredients: ["Pineapple Juice", "Orange Juice", "Grenadine", "Maraschino Cherry"],
+    nutritionalFacts: {
+      calories: "160 kcal",
+      sugar: "35g",
+      fat: "0g"
+    }
+  },
+  {
+    id: 8,
+    name: "Cucumber Mint Cooler",
+    description: "The ultimate refresher with crisp cucumber and cooling garden mint.",
+    imageUrl: "https://images.unsplash.com/photo-1516746412402-855d212af497?q=80&w=800",
+    price: "$4.25",
+    category: "Classic",
+    color: "from-green-200 to-green-400",
+    ingredients: ["Cucumber Slices", "Fresh Mint", "Lime Juice", "Soda Water"],
+    nutritionalFacts: {
+      calories: "20 kcal",
+      sugar: "2g",
+      fat: "0g"
+    }
+  }
 ];
 
 const BeverageCard: React.FC<{ beverage: Beverage; index: number; onSelect: (bev: Beverage) => void }> = ({ beverage, index, onSelect }) => {
@@ -69,7 +133,7 @@ const BeverageCard: React.FC<{ beverage: Beverage; index: number; onSelect: (bev
         visible: { 
             opacity: 1, 
             y: 0,
-            transition: { duration: 0.5, delay: index * 0.1 }
+            transition: { duration: 0.5, delay: index * 0.05 }
         }
     };
 
@@ -86,12 +150,18 @@ const BeverageCard: React.FC<{ beverage: Beverage; index: number; onSelect: (bev
             <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${beverage.color}`}></div>
             <img src={`${beverage.imageUrl}&auto=format&fit=crop&w=800&h=900`} alt={beverage.name} className="w-full h-96 object-cover transform group-hover:scale-110 transition-transform duration-500" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
+            <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-white uppercase tracking-widest border border-white/10">
+                {beverage.category}
+            </div>
             <div className="absolute bottom-0 left-0 p-6 text-white w-full">
                 <h3 className="text-2xl font-bold font-display">{beverage.name}</h3>
                 <p className="text-brand-light/80 mt-2 line-clamp-2">{beverage.description}</p>
-                <div className="mt-4 flex items-center text-brand-primary font-semibold text-sm">
-                    View Details
-                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                <div className="mt-4 flex items-center justify-between">
+                    <span className="text-brand-primary font-bold text-xl">{beverage.price}</span>
+                    <div className="flex items-center text-brand-primary font-semibold text-sm">
+                        View Details
+                        <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                    </div>
                 </div>
             </div>
         </motion.div>
@@ -101,7 +171,18 @@ const BeverageCard: React.FC<{ beverage: Beverage; index: number; onSelect: (bev
 const FeaturedBeverages: React.FC = () => {
   const [selectedBev, setSelectedBev] = useState<Beverage | null>(null);
   const [quantity, setQuantity] = useState(1);
+  const [activeCategory, setActiveCategory] = useState<string>("All");
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 10]);
   const { addToCart } = useCart();
+
+  const categories = ["All", ...Array.from(new Set(beverages.map(b => b.category)))];
+
+  const filteredBeverages = beverages.filter(bev => {
+    const priceValue = parseFloat(bev.price.replace('$', ''));
+    const matchesCategory = activeCategory === "All" || bev.category === activeCategory;
+    const matchesPrice = priceValue >= priceRange[0] && priceValue <= priceRange[1];
+    return matchesCategory && matchesPrice;
+  });
 
   const handleAddToCart = () => {
     if (selectedBev) {
@@ -126,12 +207,65 @@ const FeaturedBeverages: React.FC = () => {
             Crafted to perfection. Each sip is an experience waiting to happen.
           </p>
         </motion.div>
+
+        {/* Filters */}
+        <div className="mb-12 space-y-8">
+          <div className="flex flex-wrap justify-center gap-4">
+            {categories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-6 py-2 rounded-full font-bold transition-all duration-300 border-2 ${
+                  activeCategory === cat 
+                    ? "bg-brand-primary border-brand-primary text-white shadow-[0px_0px_15px_rgba(255,69,0,0.4)]" 
+                    : "bg-transparent border-white/10 text-brand-light/60 hover:border-brand-primary/50 hover:text-brand-primary"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          <div className="max-w-md mx-auto">
+            <div className="flex justify-between items-center mb-4">
+              <span className="text-brand-light/60 font-bold uppercase text-xs tracking-widest">Price Range</span>
+              <span className="text-brand-primary font-bold">${priceRange[0]} - ${priceRange[1]}</span>
+            </div>
+            <input 
+              type="range" 
+              min="0" 
+              max="10" 
+              step="0.5"
+              value={priceRange[1]}
+              onChange={(e) => setPriceRange([priceRange[0], parseFloat(e.target.value)])}
+              className="w-full h-2 bg-white/5 rounded-lg appearance-none cursor-pointer accent-brand-primary"
+            />
+          </div>
+        </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {beverages.map((bev, index) => (
-            <BeverageCard key={bev.id} beverage={bev} index={index} onSelect={setSelectedBev} />
-          ))}
+          <AnimatePresence mode="popLayout">
+            {filteredBeverages.map((bev, index) => (
+              <BeverageCard key={bev.id} beverage={bev} index={index} onSelect={setSelectedBev} />
+            ))}
+          </AnimatePresence>
         </div>
+
+        {filteredBeverages.length === 0 && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center py-20"
+          >
+            <p className="text-brand-light/40 text-xl italic">No beverages match your current filters.</p>
+            <button 
+              onClick={() => { setActiveCategory("All"); setPriceRange([0, 10]); }}
+              className="mt-4 text-brand-primary font-bold hover:underline"
+            >
+              Reset Filters
+            </button>
+          </motion.div>
+        )}
 
         <AnimatePresence>
           {selectedBev && (

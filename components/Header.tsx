@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage }) => {
     };
   }, [isMenuOpen]);
 
-  const navItems = ['Home', 'Drinks', 'About', 'Contact'];
+  const navItems = ['Home', 'Drinks', 'About', 'History', 'Contact'];
 
   const menuVariants: Variants = {
     hidden: { opacity: 0, y: '-100%' },

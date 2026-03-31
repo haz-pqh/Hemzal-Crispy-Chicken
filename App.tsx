@@ -10,6 +10,7 @@ import Drinks from './pages/Drinks';
 import AboutPage from './pages/About';
 import Contact from './pages/Contact';
 import CartPage from './pages/Cart';
+import HistoryPage from './pages/History';
 import LoadingSpinner from './components/LoadingSpinner';
 import { CartProvider } from './contexts/CartContext';
 
@@ -70,6 +71,8 @@ const App: React.FC = () => {
         return <Contact />;
       case 'Cart':
         return <CartPage />;
+      case 'History':
+        return <HistoryPage />;
       default:
         return <Home setPage={handlePageChange} />;
     }

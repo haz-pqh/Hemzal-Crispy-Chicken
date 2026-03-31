@@ -355,6 +355,33 @@ const CartPage: React.FC = () => {
               Secure checkout powered by Hemzal Pay
             </p>
           </div>
+
+          {/* Persistent Order History */}
+          {orderHistory.length > 0 && (
+            <div className="mt-8">
+              <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                <ShoppingBag className="w-5 h-5 text-brand-primary" />
+                Order History
+              </h2>
+              <div className="space-y-4">
+                {orderHistory.map((order, idx) => (
+                  <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-brand-light/40 text-[10px] uppercase font-bold tracking-wider">{order.date}</span>
+                      <span className="text-brand-primary font-bold text-sm">${order.total.toFixed(2)}</span>
+                    </div>
+                    <div className="flex flex-wrap gap-1">
+                      {order.items.map((item, i) => (
+                        <span key={i} className="text-[10px] text-brand-light/60 bg-white/5 px-2 py-0.5 rounded-md border border-white/5">
+                          {item.quantity}x {item.beverage.name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
