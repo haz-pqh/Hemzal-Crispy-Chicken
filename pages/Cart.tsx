@@ -8,10 +8,19 @@ import { CartItem } from '../types';
 const CartPage: React.FC = () => {
   const { cart, removeFromCart, clearCart, addToCart } = useCart();
   const [isOrderPlaced, setIsOrderPlaced] = useState(false);
-  const [lastOrder, setLastOrder] = useState<{ items: CartItem[], total: number } | null>(null);
+  const [lastOrder, setLastOrder] = useState<{ items: CartItem[], total: number, date: string } | null>(null);
+  const [orderHistory, setOrderHistory] = useState<{ items: CartItem[], total: number, date: string }[]>(() => {
+    const saved = localStorage.getItem('hemzal_order_history');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [email, setEmail] = useState('');
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [emailStatus, setEmailStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  // Save history to localStorage
+  React.useEffect(() => {
+    localStorage.setItem('hemzal_order_history', JSON.stringify(orderHistory));
+  }, [orderHistory]);
 
   const subtotal = cart.reduce(
     (total, item) => {
@@ -27,8 +36,14 @@ const CartPage: React.FC = () => {
       return;
     }
 
-    const orderData = { items: [...cart], total: subtotal };
+    const orderData = { 
+      items: [...cart], 
+      total: subtotal,
+      date: new Date().toLocaleString()
+    };
+    
     setLastOrder(orderData);
+    setOrderHistory(prev => [orderData, ...prev].slice(0, 5)); // Keep last 5 orders
     setIsOrderPlaced(true);
     clearCart();
     window.scrollTo(0, 0);
@@ -155,6 +170,33 @@ const CartPage: React.FC = () => {
             Order More
           </button>
         </div>
+
+        {/* Order History Section */}
+        {orderHistory.length > 1 && (
+          <div className="mt-20 text-left">
+            <h2 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+              <ShoppingBag className="w-6 h-6 text-brand-primary" />
+              Recent Order History
+            </h2>
+            <div className="space-y-6">
+              {orderHistory.slice(1).map((order, idx) => (
+                <div key={idx} className="bg-white/5 border border-white/10 rounded-3xl p-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="text-brand-light/40 text-sm">{order.date}</span>
+                    <span className="text-brand-primary font-bold">${order.total.toFixed(2)}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {order.items.map((item, i) => (
+                      <span key={i} className="bg-white/5 border border-white/10 rounded-full px-3 py-1 text-xs text-brand-light/60">
+                        {item.quantity}x {item.beverage.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     );
   }

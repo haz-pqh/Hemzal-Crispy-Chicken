@@ -27,6 +27,9 @@ async function startServer() {
   app.post("/api/send-email", async (req, res) => {
     const { email, orderDetails } = req.body;
 
+    console.log("Attempting to send email to:", email);
+    console.log("Order Details:", JSON.stringify(orderDetails, null, 2));
+
     if (!email || !orderDetails) {
       return res.status(400).json({ error: "Missing email or orderDetails" });
     }
@@ -34,25 +37,36 @@ async function startServer() {
     try {
       const resendClient = getResend();
       const { data, error } = await resendClient.emails.send({
-        from: "Hemzal <onboarding@resend.dev>",
+        from: "onboarding@resend.dev",
         to: email,
         subject: "Order Confirmation - Hemzal Crispy Chicken & Beverages",
         html: `
-          <h1>Thank you for your order!</h1>
-          <p>Your refreshing beverages are being prepared.</p>
-          <h2>Order Summary</h2>
-          <ul>
-            ${orderDetails.items.map((item: any) => `
-              <li>${item.quantity}x ${item.beverage.name} - $${(parseFloat(item.beverage.price.replace('$', '')) * item.quantity).toFixed(2)}</li>
-            `).join('')}
-          </ul>
-          <p><strong>Total Paid: $${orderDetails.total.toFixed(2)}</strong></p>
-          <p>We hope you enjoy your drinks!</p>
+          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+            <h1 style="color: #FF4500;">Thank you for your order!</h1>
+            <p>Your refreshing beverages are being prepared.</p>
+            <div style="background: #f9f9f9; padding: 20px; border-radius: 10px;">
+              <h2 style="margin-top: 0;">Order Summary</h2>
+              <ul style="list-style: none; padding: 0;">
+                ${orderDetails.items.map((item: any) => `
+                  <li style="padding: 10px 0; border-bottom: 1px solid #eee;">
+                    <strong>${item.quantity}x</strong> ${item.beverage.name} - 
+                    <span style="color: #666;">$${(parseFloat(item.beverage.price.replace('$', '')) * item.quantity).toFixed(2)}</span>
+                  </li>
+                `).join('')}
+              </ul>
+              <p style="font-size: 1.2em; font-weight: bold; margin-top: 20px;">
+                Total Paid: <span style="color: #FF4500;">$${orderDetails.total.toFixed(2)}</span>
+              </p>
+            </div>
+            <p style="color: #888; font-size: 0.8em; margin-top: 30px; text-align: center;">
+              We hope you enjoy your drinks!
+            </p>
+          </div>
         `,
       });
 
       if (error) {
-        console.error("Resend error:", error);
+        console.error("Resend API Error:", JSON.stringify(error, null, 2));
         return res.status(400).json({ error });
       }
 

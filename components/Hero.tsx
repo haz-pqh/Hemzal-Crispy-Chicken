@@ -89,12 +89,14 @@ const Hero: React.FC<HeroProps> = ({ setPage }) => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 2 }}
         >
-          <button 
+          <motion.button 
             onClick={() => setPage('Drinks')}
-            className="mt-8 bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-bold py-3 px-8 rounded-full text-lg hover:scale-105 transform transition-transform duration-300 shadow-lg shadow-brand-primary/20"
+            whileHover={{ scale: 1.05, boxShadow: "0px 0px 30px rgba(255, 69, 0, 0.4)" }}
+            whileTap={{ scale: 0.95 }}
+            className="mt-8 bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg shadow-brand-primary/20 transition-shadow duration-300"
           >
-            Discover Our Drinks
-          </button>
+            Order Now
+          </motion.button>
         </motion.div>
       </div>
       <motion.div

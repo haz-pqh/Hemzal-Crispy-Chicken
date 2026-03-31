@@ -132,9 +132,9 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage }) => {
           </nav>
           <motion.button 
             onClick={() => handleNavClick('Drinks')}
-            whileHover={{ scale: 1.05, boxShadow: "0px 0px 15px rgba(255, 69, 0, 0.4)" }}
+            whileHover={{ scale: 1.05, boxShadow: "0px 0px 20px rgba(255, 69, 0, 0.5)" }}
             whileTap={{ scale: 0.95 }}
-            className="hidden md:block bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-bold py-2 px-6 rounded-full"
+            className="hidden md:block bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-bold py-2 px-6 rounded-full transition-shadow duration-300"
           >
             Order Now
           </motion.button>
@@ -197,9 +197,9 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setPage }) => {
               <motion.button
                 variants={menuItemVariants}
                 onClick={() => { handleNavClick('Drinks'); setIsMenuOpen(false); }}
-                whileHover={{ scale: 1.05, boxShadow: "0px 0px 15px rgba(255, 69, 0, 0.4)" }}
+                whileHover={{ scale: 1.05, boxShadow: "0px 0px 20px rgba(255, 69, 0, 0.5)" }}
                 whileTap={{ scale: 0.95 }}
-                className="mt-6 bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-bold py-3 px-8 rounded-full text-lg"
+                className="mt-6 bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-bold py-3 px-8 rounded-full text-lg transition-shadow duration-300"
               >
                 Order Now
               </motion.button>
